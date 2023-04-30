@@ -1,78 +1,244 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>竞赛记录</title>
+    <title>竞赛数据</title>
+    <link rel="shortcut icon" href="../logo.ico">
     <meta charset="utf-8">
-        <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
     <style>
         body {
-            background-color: #66ccff;
+            background-color: #dddddd;
         }
-
         .show {
             display: flex;
             justify-content: center;
         }
-
+        .title {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .title h1 {
+            margin-left: 20px;
+        }
         .box {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             background-color: white;
             margin-top: 50px;
-            width: 1000px;
-            min-height: 600px;
+            width: 1200px;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 100%;
         }
-
+        .left-box, .right-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
         table {
-            margin: 20px auto !important;
-            width: 90% !important;
+            margin:0 auto;
+            width: 100%;
             border-collapse: collapse;
         }
-
-        th, td {
-            text-align: center !important;
+        tr, th, td {
+            text-align: center;
+            vertical-align: middle;
+            line-height: 32px;
+            padding:5px;
+        }
+        .rank {
+            font-weight: bold;
+            color: #FF5722;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: row;
+            margin-top: 20px;
+        }
+        .btn-group .layui-btn {
+            margin-right: 10px;
+            background-color: #857f7f;
+        }
+        .btn-group .layui-btn:hover {
+            background-color: #857f7f;
+        }
+        .no-join-box {
+            width: 100%;
+            margin-top: 50px;
+        }
+        .no-join-box h2 {
+            text-align: center;
+        }
+        .no-join-table {
+            margin: 20px auto !important;
+            width: 80% !important;
+            border-collapse: collapse;
         }
     </style>
     <script src="../jquery-3.6.0.min.js" type="text/javascript"></script>
     <script>
-        window.onload = function () {
+        $(document).ready(function(){
+            var id = location.search.substr(1).split("=")[1];
+            $.ajax({
+                url: "search.php",
+                type: "GET",
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        var users = response.data;
+                        var html = '';
+                        users.forEach(function(user, index) {
+                            if (index % 10 == 0) {
+                                html += '<tr>';
+                            }
+                            html += '<td>' + user.user_name + '</td>';
+                            if (index % 10 == 9 || index == users.length - 1) {
+                                html += '</tr>';
+                            }
+                        });
+                        $('.no-join-table tbody').html(html);
+                    } else {
+                        alert('获取数据失败!');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr);
+                    console.error(status);
+                    console.error(error);
+                    alert('获取数据失败!');
+                }
+            });        
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
             var id = location.search.substr(1).split("=")[1];
             $("h1").html(id);
-
+            $(".home-btn").click(function(){
+                window.location.href = "../index.php";
+            });
+            $(".back-btn").click(function(){
+                window.history.back();
+            });
             $.ajax({
                 url: "getInfo.php",
                 type: "GET",
                 data: {
                     id: id
                 },
-                success(res) {
-                    $("#info").html(res);
+                success: function(response) {
+                    if (response.success) {
+                        var info = response.data;
+                        var leftHtml = '';
+                        var rank = 1;
+                        info.sort(function(a, b){return b.accuracy - a.accuracy});
+                        info.forEach(function(item, index){
+                            leftHtml += '<tr><td class="rank">' + rank + '</td>'
+                            + '<td>' + item.user_name + '</td>'
+                            + '<td>' + item.word_count + '字</td>'
+                            + '<td>' + item.time + '</td>'
+                            + '<td>' + item.date + '</td>'
+                            + '<td>' + item.speed + '字/分</td>'
+                            + '<td>' + item.accuracy + '%</td></tr>';
+                            rank++;
+                        });
+                        $('.left-box tbody').html(leftHtml);
+                        var rightHtml = '';
+                        rank = 1;
+                        info.sort(function(a, b){return b.speed - a.speed});
+                        info.forEach(function(item, index){
+                            rightHtml += '<tr><td class="rank">' + rank + '</td>'
+                            + '<td>' + item.user_name + '</td>'
+                            + '<td>' + item.word_count + '字</td>'
+                            + '<td>' + item.time + '</td>'
+                            + '<td>' + item.date + '</td>'
+                            + '<td>' + item.speed + '字/分</td>'
+                            + '<td>' + item.accuracy + '%</td></tr>';
+                            rank++;
+                        });
+                        $('.right-box tbody').html(rightHtml);
+                    } else {
+                        alert('获取数据失败!');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr);
+                    console.error(status);
+                    console.error(error);
+                    alert('获取数据失败!');
                 }
-            })
-        }
+            });
+        });
     </script>
 </head>
-
 <body>
     <div class="show">
         <div class="box">
-            <h1 style="margin-top: 20px;"></h1>
-            <table class="layui-table">
-                <thead>
-                    <th>ID</th>
-                    <th>用户名</th>
-                    <th>总字数</th>
-                    <th>时间</th>
-                    <th>日期</th>
-                    <th>速度</th>
-                    <th>正确率</th>
-                </thead>
-                <tbody id="info"></tbody>
-            </table>
+            <div class="btn-group">
+                <button class="layui-btn home-btn">返回主页</button>
+                <button class="layui-btn back-btn">返回上一页</button>
+            </div>
+            <div class="left-box">
+                <h2 style="text-align: center;">正确率排名✔️</h2>
+                <table class="layui-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">排名</th>
+                            <th style="text-align: center;">用户名</th>
+                            <th style="text-align: center;">总字数</th>
+                            <th style="text-align: center;">时间</th>
+                            <th style="text-align: center;">日期</th>
+                            <th style="text-align: center;">速度</th>
+                            <th style="text-align: center;">正确率</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="right-box">
+                <h2 style="text-align: center;">速度排名⏱️</h2>
+                <table class="layui-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">排名</th>
+                            <th style="text-align: center;">用户名</th>
+                            <th style="text-align: center;">总字数</th>
+                            <th style="text-align: center;">时间</th>
+                            <th style="text-align: center;">日期</th>
+                            <th style="text-align: center;">速度</th>
+                            <th style="text-align: center;">正确率</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="no-join-box">
+                <h2>未参加人员名单⚠️</h2>
+                <table class="no-join-table">
+                    <thead>
+                        <tr>
+                            <th>数据：</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
+    <script src="../layui/layui.js"></script>
+    <script>
+        layui.use(['form', 'layer'], function(){
+            var form = layui.form, layer = layui.layer;
+            form.render();
+        });
+    </script>
 </body>
-
-</html>
+</html> 

@@ -12,28 +12,29 @@
         $db_config["password"],
         $db_config["dbname"]
     );
-    
+
     // 检测连接
     if ($conn->connect_error) {
         die("连接失败: " . $conn->connect_error);
     }
 
-    $sql = "SELECT * FROM contest_info
-            WHERE contest_id = {$id}
-            ORDER BY `date` desc";
+    $sql = "SELECT * FROM contest_info WHERE contest_id = {$id} ORDER BY `date` DESC";
     $result = mysqli_query($conn, $sql);
 
+    $rows = array();
+
     while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr>";
-        echo "<td>" . $row["id"] . "</td>";
-        echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["word_count"] . "字</td>";
-        echo "<td>" . $row["time"] . "</td>";
-        echo "<td>" . $row["date"] . "</td>";
-        echo "<td>" . $row["speed"] . "字/分</td>";
-        echo "<td>" . $row["accuracy"] . "%</td>";
-        echo "</tr>";
+        $rows[] = $row;
     }
-    
+
     $conn->close();
+
+    // 转换为JSON格式
+    $response = array(
+        'success' => true,
+        'data' => $rows
+    );
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
 ?>

@@ -34,14 +34,24 @@
 
     $stmt = $conn->prepare("INSERT INTO grades VALUES(0, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssissii", $name, $acticle, $wordCount, $time, $date, $speed, $accuracy);
-    $stmt->execute();
+    $result = $stmt->execute();  // 执行 SQL 语句
+    $stmt->close();  // 关闭 prepared statement
 
     if ($contestId) {
         $stmt = $conn->prepare("INSERT INTO contest_info VALUES(0, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sisissii", $name, $contestId, $acticle, $wordCount, $time, $date, $speed, $accuracy);
-        $stmt->execute();
+        $result = $stmt->execute();  // 执行 SQL 语句
+        $stmt->close();  // 关闭 prepared statement
     }
 
-    $stmt->close();
-    $conn->close();
+    $conn->close();  // 关闭连接
+
+    if ($result) {
+        echo "<script>alert('提交成功！');</script>";
+        echo "<script>console.log('提交成功！');</script>";
+    } else {
+        echo "<script>alert('提交失败：".$conn->error."');</script>";
+        echo "<script>console.log('提交失败：".$conn->error."');</script>";
+    }
+
 ?>

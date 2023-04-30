@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>竞赛记录</title>
+    <title>其他内容</title>
     <link rel="shortcut icon" href="../logo.ico">
     <meta charset="utf-8">
     <link rel="stylesheet" href="../layui/css/layui.css" media="all">
@@ -40,14 +40,6 @@
     <script src="../jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="../layui/layui.js"></script>
     <script>
-        $.ajax({
-            url: "getGame.php",
-            success(res) {
-                $("#noEnd").html(res[0]);
-                $("#ended").html(res[1]);
-            }
-        });
-        
         layui.use(['layer'], function() {
             var layer = layui.layer;
             
@@ -67,27 +59,26 @@
                 <button class="layui-btn home-btn">返回主页</button>
             </div>
             </h1>
-            <h1 style="margin-top: 20px;">进行中的竞赛🔛</h1>
+            <h1 style="margin-top: 20px;">推荐网站（数据不同步）</h1>
             <table class="layui-table">
                 <thead>
-                    <th>ID</th>
-                    <th>文章</th>
-                    <th>结束时间</th>
-                    <th>限时</th>
-                    <th>操作</th>
+                    <tr><th>项目</th>
+                    <th>网站</th></tr>
                 </thead>
-                <tbody id="noEnd"></tbody>
-            </table>
-            <h1>已结束的竞赛🔚</h1>
-            <table class="layui-table">
-                <thead>
-                    <th>ID</th>
-                    <th>文章</th>
-                    <th>结束时间</th>
-                    <th>限时</th>
-                    <th>操作</th>
-                </thead>
-                <tbody id="ended"></tbody>
+                <tbody id="form">
+                    <tr>
+                        <td>打字练习（推荐）</td><td><a style="padding: 3px;" href="https://worthtyping.netlify.app/">点我跳转</a></td>
+                    </tr>
+                    <tr>
+                        <td>打字速度快测</td><td><a style="padding: 3px;" href="https://lyrelion.github.io/WordGame/">点我跳转</a></td>
+                    </tr>
+                    <tr>
+                        <td>在线指法练习工具①</td><td><a style="padding: 3px;" href="https://dazidazi.com/">点我跳转</a></td>
+                    </tr>
+                    <tr>
+                        <td>在线指法练习工具②</td><td><a style="padding: 3px;" href="https://et.abcoding.cn/dazi/#us">点我跳转</a></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

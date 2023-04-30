@@ -1,6 +1,6 @@
 {
-    "servername": "localhost:3306",
-    "username": "root",
-    "password": "123456",
-    "dbname": "user"
+    "servername": "localhost:3306", 
+    "username": "账号",
+    "password": "密码",
+    "dbname": "数据库名"
 }

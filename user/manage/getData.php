@@ -16,8 +16,11 @@
     if ($conn->connect_error) {
         die("连接失败: " . $conn->connect_error);
     }
-
-    $result = $conn->query("SELECT * FROM `grades` ORDER BY `date` DESC");
+    // 按提交时间顺序（有时系统错误导致时间会出错，不建议）
+    // $result = $conn->query("SELECT * FROM `grades` ORDER BY `date` DESC");
+    
+    // 按提交成绩ID降序
+    $result = $conn->query("SELECT * FROM `grades` ORDER BY `id` DESC");
     $data = $result->fetch_all();
 
     $result = $conn->query("SELECT `user_id`, `user_name` FROM users ORDER BY `user_id`");

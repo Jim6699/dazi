@@ -23,9 +23,8 @@
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->bind_result($id, $acticle, $end_time, $time_limit);
-    
     if ($stmt->fetch() == 0) {
-        echo "<script>alert('邀请码不正确！');history.go(-1);</script>";
+        echo "<script>alert('竞赛ID不正确！请点击“查看竞赛”获取进行中的竞赛的ID');history.go(-1);</script>"; 
     } else{
         if (strtotime($now) > strtotime($end_time)) {
             echo "<script>alert('竞赛已结束！');history.go(-1);</script>";
@@ -35,4 +34,5 @@
     }
 
     $conn->close();
+    header('Content-Type:text/html;charset=utf-8');
 ?>

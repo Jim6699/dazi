@@ -2,13 +2,16 @@
 <html>
 
 <head>
+    <!--30分钟强制刷新 -->
+    <meta http-equiv="refresh" content="1800">
     <title>个人中心</title>
+    <link rel="shortcut icon" href="../logo.ico">
     <meta charset="utf-8">
     <style>
         html,
         body {
             height: 100%;
-            background-color: #66ccff;
+            background-color: #dddddd;
         }
 
         .show {
@@ -21,12 +24,13 @@
             background-color: white;
             margin-top: 50px;
             margin-bottom: 80px;
-            width: 1000px;
-            height: 600px;
+            width: 1200px;
+            height: 700px;
+            border-radius: 20px;
         }
 
         #charts {
-            width: 1000px;
+            width: 1200px;
             height: 450px;
         }
     </style>
@@ -89,6 +93,8 @@
                     <li onclick="window.location.href = '../type/exercise.html'">练习模式</li>
                     <li>竞赛模式</li>
                     <li onclick="window.location.href = '../gameInfo/game.html'">查看竞赛</li>
+                    <li onclick="window.location.href = '../exercise/index.html'">指法练习</li>
+                    <li onclick="window.location.href = './useful.html'">其他内容</li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
@@ -143,10 +149,10 @@
                     <div class="layui-tab-item">
                         <form class="layui-form" action="query.php">
                             <div class="layui-form-item">
-                                <label class="layui-form-label">邀请码</label>
+                                <label class="layui-form-label">ID</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="id" required lay-verify="required|number"
-                                        placeholder="请输入邀请码" autocomplete="off" class="layui-input" maxlength="6">
+                                        placeholder="请输入竞赛ID" autocomplete="off" class="layui-input" maxlength="6">
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -161,11 +167,7 @@
         </div>
     </div>
     <footer style="background:none;bottom: 0;width: 100%;height: 50px;margin-top: -50px;text-align: center;">
-        <a href="https://github.com/HuanLing4763/dazi/" target="_blank">项目源码</a>
-        |
-        <a href="mailto:2043417914@qq.com" onclick="window.open('https://gitee.com/huan_ling/dazi/')">联系我们</a>
-        <br>
-        <a href="https://beian.miit.gov.cn/" target="_blank">湘ICP备20****87号-1</a>
+        <a href="" target="_blank"></a>
     </footer>
     <script>
         layui.use('form', function () {

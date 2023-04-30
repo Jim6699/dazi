@@ -28,7 +28,7 @@ var acticle = "";
 
 window.onload = function () {
     acticle = getCookie("acticle");
-    acticle = acticle == "" ? "冰灯" : acticle;
+    acticle = acticle == "" ? "moren" : acticle;
     showTexts(acticle);
     $.ajax({
         type: "GET",
@@ -68,12 +68,48 @@ function getCookie(cname) {
     return "";
 }
 
+// function showTexts(str) {
+//     $.ajax({
+//         url: `../acticle/${str}.txt`,
+//         success: function (data) {
+//             acticle = str;
+//             current_line = 0;  // 重置输入行数
+//             limitTime = 0;
+//             all = data.replace(/[\r\n]/g, "").length;
+//             percentage = 1 / all * 100;
+//             data = data.split('\n');
+//             var strArr = [];
+//             var htmlcode = '';
+//             for (let i = 0; i < data.length; i++) {
+//                 for (let j = 0; j < data[i].length; j += 40)
+//                     strArr.push(data[i].slice(j, j + 40));
+//             }
+//             for (line = 0; line < strArr.length; line++) {
+//                 var lineStr = strArr[line].replace(/[\r\n]/g, "");
+//                 htmlcode += `<div class="text" id="refer${line}">`;
+//                 for (let j = 0; j < lineStr.length; j++) {
+//                     htmlcode += `<span id=row${line}&column${j} class="">${lineStr[j]}</span>`;
+//                 }
+//                 htmlcode += `</div><input class="inputText" id="${line}" readonly oninput="startTime()">`;
+//             }
+//             document.getElementById("txtHint").innerHTML = htmlcode;
+//             document.getElementById("Sidebar").innerHTML = Sidebar;
+//             document.getElementById("0").focus();
+//             $("#0").removeAttr("readonly");
+//             addAttr(0);
+
+//             // 设置cookie，记录上次选择的文章，保存2天
+//             document.cookie = "acticle=" + acticle + ";max-age=" + 2 * 24 * 60 * 60
+//         }
+//     });
+// }
+
 function showTexts(str) {
     $.ajax({
         url: `../acticle/${str}.txt`,
         success: function (data) {
             acticle = str;
-            current_line = 0;  // 重置输入行数
+            current_line = 0;
             limitTime = 0;
             all = data.replace(/[\r\n]/g, "").length;
             percentage = 1 / all * 100;
@@ -90,19 +126,26 @@ function showTexts(str) {
                 for (let j = 0; j < lineStr.length; j++) {
                     htmlcode += `<span id=row${line}&column${j} class="">${lineStr[j]}</span>`;
                 }
-                htmlcode += `</div><input class="inputText" id="${line}" readonly oninput="startTime()">`;
+                htmlcode += `</div><input class="inputText" id="${line}" readonly oninput="startTime()" value="">`; //修改此处，给每个输入框都新增一个value属性，并将其清空，修改readonly属性为false，同时每个输入框重新加上监听函数
             }
             document.getElementById("txtHint").innerHTML = htmlcode;
             document.getElementById("Sidebar").innerHTML = Sidebar;
             document.getElementById("0").focus();
             $("#0").removeAttr("readonly");
             addAttr(0);
+            
+            for (let i = 1; i < strArr.length; i++) { //新增代码
+                $(`#${i}`).removeAttr("readonly");
+                $(`#${i}`).val("");
+                addAttr(i);
+            }
 
-            // 设置cookie，记录上次选择的文章，保存180天
-            document.cookie = "acticle=" + acticle + ";max-age=" + 180 * 24 * 60 * 60
+            // 设置cookie，记录上次选择的文章，保存2天
+            document.cookie = "acticle=" + acticle + ";max-age=" + 2 * 24 * 60 * 60
         }
     });
 }
+
 
 function compositionstart() {
     inputLock = true;
@@ -218,16 +261,31 @@ function checkTime(time) {
         time = "0" + time;
     return time;
 }
+
+// function reset() {
+//     secs = 0;
+//     mins = 0;
+//     accuracy = 100;
+//     current_line = 0;  // 重置输入行数
+//     document.getElementById("Sidebar").innerHTML = Sidebar;
+//     isCounting = false;
+//     clearTimeout(timeoutId); //清除指定id计时器
+//     showTexts(acticle);
+// }
+
 function reset() {
     secs = 0;
     mins = 0;
     accuracy = 100;
-    current_line = 0;  // 重置输入行数
+    current_line = 0; // 重置输入行数
+    all = 0;
+    sum = 0;
     document.getElementById("Sidebar").innerHTML = Sidebar;
     isCounting = false;
-    clearTimeout(timeoutId); //清除指定id计时器
+    clearTimeout(timeoutId);//清除指定id计时器
     showTexts(acticle);
 }
+
 
 function changeMode() {
     var input = '<input class="btn" type="number" min=1 value=5>';

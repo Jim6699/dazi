@@ -24,7 +24,7 @@
     $speed = [];
     $accuracy = [];
     $sql = "SELECT `date`,`speed`,`accuracy` FROM grades
-            WHERE `name` = '{$user}'";
+            WHERE `user_name` = '{$user}'";
 
     $result = mysqli_query($conn, $sql);
     while($row = mysqli_fetch_assoc($result)) {
