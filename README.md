@@ -16,7 +16,7 @@
 
 在线试用网站：http://welfare.freeee.ml/dazi
 
-用户：test、张三、李四
+用户：test
 
 密码：123456789（普通用户默认）
 
